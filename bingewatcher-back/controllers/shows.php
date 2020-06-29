@@ -10,14 +10,14 @@ if($_REQUEST['action'] === 'index'){
 } else if($_REQUEST['action'] === 'create') {
     $request_body = file_get_contents('php://input');
     $body_object = json_decode($request_body);
-    $new_show = new Show(null, $body_object->title, $body_object->service, $body_object->numOfEpisodes, $body_object->currentEpisode);
+    $new_show = new Show(null, $body_object->title, $body_object->image, $body_object->seasons, $body_object->currentEpisode);
     $all_shows = Shows::create($new_show);
 
     echo json_encode($all_shows);
 } else if($_REQUEST['action'] ==='update'){
     $request_body = file_get_contents('php://input');
     $body_object = json_decode($request_body);
-    $updated_show = new Show($_REQUEST['id'], $body_object->title, $body_object->service, $body_object->numOfEpisodes, $body_object->currentEpisode);
+    $updated_show = new Show($_REQUEST['id'], $body_object->title, $body_object->image, $body_object->seasons, $body_object->currentEpisode);
     $all_shows = Shows::update($updated_show);
 
     echo json_encode($all_shows);

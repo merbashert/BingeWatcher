@@ -22,29 +22,29 @@ $dbconn = pg_connect('host=localhost dbname=binge');
 
 class Show {
     public $id;
-    public $title;
-    public $service;
-    public $numOfEpisodes;
+    public $name;
+    public $image;
+    public $seasons = array();
     public $currentEpisode;
-    public function __construct($id, $title, $service, $numOfEpisodes, $currentEpisode){
+    public function __construct($id, $name, $image, $seasons, $currentEpisode){
         $this->id = $id;
-        $this->title = $title;
-        $this->service = $service;
-        $this->numOfEpisodes = $numOfEpisodes;
+        $this->name = $name;
+        $this->image = $image;
+        $this->seasons = $seasons;
         $this->currentEpisode = $currentEpisode;
     }
 }
 
 class Shows {
     static function create($show){
-        $query = "INSERT INTO shows (title, service, numOfEpisodes, currentEpisode) VALUES ($1, $2, $3, $4)";
-        $query_params = array($show->title, $show->service, $show->numOfEpisodes, $show->currentEpisode);
+        $query = "INSERT INTO shows (name, image, seasons, currentEpisode) VALUES ($1, $2, $3, $4)";
+        $query_params = array($show->name, $show->image, $show->seasons, $show->currentEpisode);
         pg_query_params($query, $query_params);
         return self::all();
     }
     static function update($updated_show){
-        $query = "UPDATE shows SET title = $1, service=$2, numOfEpisodes=$3, currentEpisode=$4 WHERE id=$5";
-        $query_params = array($updated_show->title, $updated_show->service, $updated_show->numOfEpisodes, $updated_show->currentEpisode, $updated_show->id);
+        $query = "UPDATE shows SET name = $1, image=$2, seasons=$3, currentEpisode=$4 WHERE id=$5";
+        $query_params = array($updated_show->name, $updated_show->image, $updated_show->seasons, $updated_show->currentEpisode, $updated_show->id);
         pg_query_params($query,$query_params);
 
         return self::all();
@@ -59,15 +59,15 @@ class Shows {
     static function all(){
         $shows = array();
 
-        $results = pg_query("SELECT * FROM shows ORDER BY title ASC");
+        $results = pg_query("SELECT * FROM shows ORDER BY name ASC");
 
         $row_object = pg_fetch_object($results);
         while($row_object) {
             $new_show = new Show(
                 intval($row_object->id),
-                $row_object->title,
-                $row_object->service,
-                intval($row_object->numofepisodes),
+                $row_object->name,
+                $row_object->image,
+                intval($row_object->seasons),
                 intval($row_object->currentepisode)
             );
             $shows[] = $new_show;
