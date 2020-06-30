@@ -4,8 +4,6 @@ header("Content-Type: application/json");
 
 include_once __DIR__ . '/../models/show.php';
 
-
-
 if($_REQUEST['action'] === 'index'){
     echo json_encode(Shows::all());
 } else if($_REQUEST['action'] === 'create') {

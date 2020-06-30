@@ -67,11 +67,11 @@ class Shows {
         while($row_object) {
         $new_show = new Show(
             intval($row_object->id),
-            intval($row_object->omdb_id),
+            $row_object->omdb_id,
             $row_object->name,
             $row_object->image,
             $row_object->seasons,
-            intval($row_object->current_episode)
+            $row_object->current_episode
         );
         $shows[] = $new_show;
 
