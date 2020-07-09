@@ -25,7 +25,7 @@ class Show {
     public $omdb_id;
     public $name;
     public $image;
-    public $seasons;
+    public $seasons = array();
     public $current_episode;
     public function __construct($id, $omdb_id, $name, $image, $seasons, $current_episode){
         $this->id = $id;
