@@ -25,28 +25,28 @@ class Show {
     public $omdb_id;
     public $name;
     public $image;
-    public $seasons;
+    public $current_season;
     public $current_episode;
-    public function __construct($id, $omdb_id, $name, $image, $seasons, $current_episode){
+    public function __construct($id, $omdb_id, $name, $image, $current_season, $current_episode){
         $this->id = $id;
         $this->omdb_id = $omdb_id;
         $this->name = $name;
         $this->image = $image;
-        $this->seasons = $seasons;
+        $this->current_season = $current_season;
         $this->current_episode = $current_episode;
     }
 }
 
 class Shows {
     static function create($show){
-        $query = "INSERT INTO shows (omdb_id, name, image, seasons, current_episode) VALUES ($1, $2, $3, $4, $5)";
-        $query_params = array($show->omdb_id, $show->name, $show->image, $show->seasons,$show->current_episode);
+        $query = "INSERT INTO shows (omdb_id, name, image, current_season, current_episode) VALUES ($1, $2, $3, $4, $5)";
+        $query_params = array($show->omdb_id, $show->name, $show->image, $show->current_season,$show->current_episode);
         pg_query_params($query, $query_params);
         return self::all();
     }
     static function update($updated_show){
-        $query = "UPDATE shows SET omdb_id = $1, name=$2, image=$3, seasons=$4, current_episode=$5 WHERE id=$6";
-        $query_params = array($updated_show->omdb_id, $updated_show->name, $updated_show->image, $updated_show->seasons, $updated_show->current_episode, $updated_show->id);
+        $query = "UPDATE shows SET omdb_id = $1, name=$2, image=$3, current_season=$4, current_episode=$5 WHERE id=$6";
+        $query_params = array($updated_show->omdb_id, $updated_show->name, $updated_show->image, $updated_show->current_season, $updated_show->current_episode, $updated_show->id);
         pg_query_params($query,$query_params);
 
         return self::all();
@@ -65,19 +65,19 @@ class Shows {
 
         $row_object = pg_fetch_object($results);
         while($row_object) {
-        $new_show = new Show(
-            intval($row_object->id),
-            $row_object->omdb_id,
-            $row_object->name,
-            $row_object->image,
-            $row_object->seasons,
-            $row_object->current_episode
-        );
-        $shows[] = $new_show;
+            $new_show = new Show(
+                intval($row_object->id),
+                intval($row_object->omdb_id),
+                $row_object->name,
+                $row_object->image,
+                intval($row_object->current_season),
+                intval($row_object->current_episode)
+            );
+            $shows[] = $new_show;
 
-        $row_object = pg_fetch_object($results);
+            $row_object = pg_fetch_object($results);
         }
         return $shows;
-        }
-        }
-        ?>
+    }
+}
+?>
