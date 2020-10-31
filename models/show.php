@@ -22,14 +22,14 @@ if(getenv('DATABASE_URL')){
 
 class Show {
     public $id;
-    public $omdb_id;
+    public $tmdb_id;
     public $name;
     public $image;
     public $current_season;
     public $current_episode;
-    public function __construct($id, $omdb_id, $name, $image, $current_season, $current_episode){
+    public function __construct($id, $tmdb_id, $name, $image, $current_season, $current_episode){
         $this->id = $id;
-        $this->omdb_id = $omdb_id;
+        $this->tmdb_id = $tmdb_id;
         $this->name = $name;
         $this->image = $image;
         $this->current_season = $current_season;
@@ -39,14 +39,14 @@ class Show {
 
 class Shows {
     static function create($show){
-        $query = "INSERT INTO shows (omdb_id, name, image, current_season, current_episode) VALUES ($1, $2, $3, $4, $5)";
-        $query_params = array($show->omdb_id, $show->name, $show->image, $show->current_season,$show->current_episode);
+        $query = "INSERT INTO shows (tmdb_id, name, image, current_season, current_episode) VALUES ($1, $2, $3, $4, $5)";
+        $query_params = array($show->tmdb_id, $show->name, $show->image, $show->current_season,$show->current_episode);
         pg_query_params($query, $query_params);
         return self::all();
     }
     static function update($updated_show){
-        $query = "UPDATE shows SET omdb_id = $1, name=$2, image=$3, current_season=$4, current_episode=$5 WHERE id=$6";
-        $query_params = array($updated_show->omdb_id, $updated_show->name, $updated_show->image, $updated_show->current_season, $updated_show->current_episode, $updated_show->id);
+        $query = "UPDATE shows SET tmdb_id = $1, name=$2, image=$3, current_season=$4, current_episode=$5 WHERE id=$6";
+        $query_params = array($updated_show->tmdb_id, $updated_show->name, $updated_show->image, $updated_show->current_season, $updated_show->current_episode, $updated_show->id);
         pg_query_params($query,$query_params);
 
         return self::all();
@@ -67,7 +67,7 @@ class Shows {
         while($row_object) {
             $new_show = new Show(
                 intval($row_object->id),
-                intval($row_object->omdb_id),
+                intval($row_object->tmdb_id),
                 $row_object->name,
                 $row_object->image,
                 intval($row_object->current_season),
